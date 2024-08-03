@@ -8,6 +8,7 @@ import Drepturi from "./Pages/Drepturi/Drepturi";
 import Contact from "./Pages/Contact/Contact";
 import Home from "./Pages/Home/Home";
 import Footer from "./Components/Footer/Footer";
+import Admin from "./Pages/Admin/Admin";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/desprenoi" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/aplica" element={<Aplica />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
 
       <Footer />

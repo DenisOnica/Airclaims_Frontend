@@ -1,41 +1,19 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import "./style.css";
 
 const NavBar = (props) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isFixed, setFixed] = useState(true);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-  const handleScroll = () => {
-    const footer = document.querySelector("footer");
-    const footerTop = footer.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-
-    if (footerTop <= windowHeight) {
-      setFixed(false);
-    } else {
-      setFixed(true);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <div
-      className={`navBar shadow-md text-2xl z-30 ${
-        isFixed ? "fixed" : "relative"
-      }`}
+      className="shadow-md text-2xl z-30"
       style={{
         backgroundColor: props.color ?? "transparent",
         color: props.textColor ?? "black",
@@ -43,13 +21,19 @@ const NavBar = (props) => {
     >
       <div className={`menu ${isMenuOpen ? "open" : ""} p-4 gap-4`}>
         <div className="logo">
-          <Link to="/drepturi">Cunosteti-va drupturile</Link>
+          <Link to="/drepturi">Cunosteti-va drepturile</Link>
         </div>
         <div>
           <Link to="/desprenoi">Despre noi</Link>
         </div>
         <div>
           <Link to="/contact">Contact</Link>
+        </div>
+        <div>
+          <Link to="/admin">Admin</Link>
+        </div>
+        <div>
+          <Link to="/">Home</Link>
         </div>
         <div>
           <Link

@@ -12,6 +12,7 @@
   "dependencies": {
     "@firebase/storage": "^0.12.6",
     "autoprefixer": "^10.4.19",
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.3",
     "postcss": "^8.4.39",

@@ -57,8 +57,7 @@ const MyForm = () => {
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
-    //const formData = new FormData();
-    //formData.append("photo", file);
+
     const storageRef = ref(storage, `tickets/${v4()}/${file.name}`);
     try {
       await uploadBytes(storageRef, file);
@@ -71,27 +70,6 @@ const MyForm = () => {
     } catch (error) {
       console.error("Error uploading image:", error);
     }
-    /*
-    try {
-      const response = await fetch("http://localhost:5000/upload-photo", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Photo upload failed");
-      }
-
-      const data = await response.json();
-      setFormData((prevState) => ({
-        ...prevState,
-        photoUrl: data.photoUrl,
-      }));
-    } catch (error) {
-      console.error("Error uploading photo:", error);
-      alert("Photo upload failed");
-    }
-      */
   };
 
   const handleSubmit = async (e) => {
@@ -99,6 +77,7 @@ const MyForm = () => {
     try {
       const response = await fetch(
         "https://airclaims-backend.onrender.com/submit-form",
+        //"http://localhost:5000/submit-form",
         {
           method: "POST",
           headers: {
@@ -107,19 +86,16 @@ const MyForm = () => {
           body: JSON.stringify(formData),
         }
       );
-      console.log(formData);
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const data = await response.json();
+
       alert("Form submitted successfully");
-      console.log("Server response:", data);
-      // Optionally reset form fields or redirect to another page
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Form submission failed");
     }
-    console.log(formData);
   };
 
   return (
