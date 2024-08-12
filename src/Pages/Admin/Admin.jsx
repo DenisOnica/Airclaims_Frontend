@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style.css";
 
@@ -11,6 +11,7 @@ const Admin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     fetchCustomers();
@@ -24,6 +25,7 @@ const Admin = () => {
         "https://airclaims-backend.onrender.com/api/customers"
       );
       setCustomers(response.data);
+      setFilteredProducts(response.data); // Initialize with all customers
     } catch (err) {
       setError("Error fetching customers");
     } finally {
@@ -31,32 +33,12 @@ const Admin = () => {
     }
   };
 
-  const debounce = (func, delay) => {
-    let debounceTimer;
-    return (...args) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => func.apply(this, args), delay);
-    };
-  };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value.toLowerCase());
-  };
-
-  const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), []);
-
-  useEffect(() => {
-    debouncedHandleSearch();
-  }, [searchTerm, debouncedHandleSearch]);
-
   const handleFileUpload = async (event, fieldName, customerId) => {
     const file = event.target.files[0];
-
     const storageRef = ref(storage, `${fieldName}/${uuidv4()}/${file.name}`);
 
     try {
       await uploadBytes(storageRef, file);
-
       const downloadURL = await getDownloadURL(storageRef);
 
       const updateData = {
@@ -79,9 +61,21 @@ const Admin = () => {
     }
   };
 
-  const filteredCustomers = customers.filter((customer) =>
-    customer.fullName.toLowerCase().includes(searchTerm)
-  );
+  const handleSearch = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+  };
+
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = customers.filter((customer) =>
+        customer.fullName.toLowerCase().includes(searchTerm)
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(customers);
+    }
+  }, [searchTerm, customers]);
 
   return (
     <div className="App">
@@ -92,7 +86,7 @@ const Admin = () => {
           type="text"
           id="search"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearch}
         />
       </div>
       {loading ? (
@@ -111,7 +105,7 @@ const Admin = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredCustomers.map((customer) => (
+            {filteredProducts.map((customer) => (
               <tr key={customer._id}>
                 <td>{customer.fullName}</td>
                 <td>{customer.flightNumber}</td>
