@@ -10,7 +10,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 
 const MyForm = () => {
-  const [formData, setFormData] = useState({
+  // Initial form data setup
+  const initialFormData = {
     email: "",
     phone: "",
     fullName: "",
@@ -18,13 +19,16 @@ const MyForm = () => {
     bookingReference: "",
     flightDate: new Date(),
     caseNumber: "",
-    photo: "",
+    photoUrl: "", // Ensuring photoUrl starts as empty
     signature: "",
-    photoUrl: "",
-  });
+  };
 
+  // State and ref declarations
+  const [formData, setFormData] = useState(initialFormData);
+  const fileInputRef = useRef(null);
   const sigCanvasRef = useRef(null);
 
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -33,6 +37,7 @@ const MyForm = () => {
     });
   };
 
+  // Handle date change
   const handleDateChange = (date) => {
     setFormData({
       ...formData,
@@ -40,38 +45,47 @@ const MyForm = () => {
     });
   };
 
+  // Handle signature change
   const handleSignature = () => {
+    const signature = sigCanvasRef.current
+      .getTrimmedCanvas()
+      .toDataURL("image/png");
     setFormData({
       ...formData,
-      signature: sigCanvasRef.current.getTrimmedCanvas().toDataURL("image/png"),
+      signature,
     });
   };
 
+  // Clear the signature
   const clearSignature = () => {
     sigCanvasRef.current.clear();
-    setFormData({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       signature: "",
-    });
+    }));
   };
 
+  // Handle photo upload
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
+
+    if (!file) return; // Add check to ensure a file is selected
 
     const storageRef = ref(storage, `tickets/${v4()}/${file.name}`);
     try {
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
-      setFormData({
-        ...formData,
+      setFormData((prevData) => ({
+        ...prevData,
         photoUrl: downloadURL,
-      });
+      }));
       console.log("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
     }
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -92,6 +106,17 @@ const MyForm = () => {
       }
 
       alert("Form submitted successfully");
+
+      // Reset form data
+      setFormData(initialFormData);
+
+      // Clear signature canvas
+      clearSignature();
+
+      // Clear file input manually since it's an uncontrolled component
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Form submission failed");
@@ -181,6 +206,7 @@ const MyForm = () => {
           <input
             type="file"
             accept="image/*"
+            ref={fileInputRef} // Use ref for file input
             onChange={handlePhotoUpload}
             className="p-2 border rounded"
             required
