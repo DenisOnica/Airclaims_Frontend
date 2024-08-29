@@ -209,7 +209,6 @@ const MyForm = () => {
             ref={fileInputRef} // Use ref for file input
             onChange={handlePhotoUpload}
             className="p-2 border rounded"
-            required
           />
         </div>
         <div className="flex flex-col">
@@ -298,7 +297,7 @@ const MyForm = () => {
         </div>
         <button
           type="submit"
-          className="bg-green-500 text-white py-3 px-10 rounded-xl hover:bg-green-600 font-bold"
+          className="bg-blue-600 text-white py-3 px-10 rounded-xl hover:bg-blue-500 font-bold"
         >
           Trimite
         </button>

@@ -38,7 +38,7 @@ const NavBar = (props) => {
         <div>
           <Link
             to="/aplica"
-            className="bg-green-500 text-white py-2 px-7 rounded-xl hover:bg-green-600 font-bold"
+            className="bg-blue-600 text-white py-2 px-7 rounded-xl hover:bg-blue-500 font-bold"
           >
             Aplica acum
           </Link>

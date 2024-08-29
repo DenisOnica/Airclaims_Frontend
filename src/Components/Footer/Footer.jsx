@@ -76,7 +76,7 @@ const Footer = () => {
             </address>
             <a
               href="mailto:contact@airclaim.com"
-              className="bg-green-500 text-white py-4 px-10 rounded-xl hover:bg-green-600"
+              className="bg-blue-600 text-white py-4 px-10 rounded-xl hover:bg-blue-500"
             >
               to be implemented
             </a>
@@ -85,7 +85,7 @@ const Footer = () => {
 
         <div className="flex justify-between items-center">
           <p className="text-gray-600">&copy;2024 - to be implemented -</p>
-          <a href="#" className="text-green-500 hover:underline">
+          <a href="#" className="text-blue-600 hover:underline">
             Înapoi la începutul paginii
           </a>
         </div>

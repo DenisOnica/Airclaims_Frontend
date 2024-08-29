@@ -102,6 +102,7 @@ const Admin = () => {
               <th>Booking Reference</th>
               <th>ID Card</th>
               <th>Flight Delay Proof</th>
+              <th>FlightTicket</th>
             </tr>
           </thead>
           <tbody>
@@ -125,6 +126,15 @@ const Admin = () => {
                     accept="image/*"
                     onChange={(e) =>
                       handleFileUpload(e, "Flight_delay_proof", customer._id)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      handleFileUpload(e, "tickets", customer._id)
                     }
                   />
                 </td>
