@@ -103,6 +103,11 @@ const Admin = () => {
               <th>ID Card</th>
               <th>Flight Delay Proof</th>
               <th>FlightTicket</th>
+              <th>Email</th>
+              <th>Case Number</th>
+              <th>ID Card link</th>
+              <th>Flight Ticket link</th>
+              <th>Flight Delay Proof link</th>
             </tr>
           </thead>
           <tbody>
@@ -138,6 +143,11 @@ const Admin = () => {
                     }
                   />
                 </td>
+                <td>{customer.email}</td>
+                <td>{customer.caseNumber}</td>
+                <td>{customer.ID_Cards}</td>
+                <td>{customer.photoUrl}</td>
+                <td>{customer.Flight_delay_proof}</td>
               </tr>
             ))}
           </tbody>
